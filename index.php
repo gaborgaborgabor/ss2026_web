@@ -4,13 +4,52 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 
 $csvFile = __DIR__ . '/data.csv';
-$input = $_GET;
+
+$method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+$input = [];
+
+if ($method === 'POST') {
+	$contentType = strtolower(trim(explode(';', $_SERVER['CONTENT_TYPE'] ?? '')[0]));
+	$rawBody = file_get_contents('php://input');
+
+	if ($contentType !== 'application/json') {
+		http_response_code(415);
+		echo json_encode([
+			'success' => false,
+			'message' => 'POST requests must use Content-Type: application/json.',
+		]);
+		exit;
+	}
+
+	if ($rawBody === false || trim($rawBody) === '') {
+		http_response_code(400);
+		echo json_encode([
+			'success' => false,
+			'message' => 'JSON body is empty.',
+		]);
+		exit;
+	}
+
+	$decoded = json_decode($rawBody, true);
+	if (!is_array($decoded)) {
+		http_response_code(400);
+		echo json_encode([
+			'success' => false,
+			'message' => 'Invalid JSON body. Expected a JSON object.',
+		]);
+		exit;
+	}
+
+	$input = $decoded;
+} else {
+	$input = $_GET;
+}
 
 if (empty($input)) {
 	http_response_code(400);
 	echo json_encode([
 		'success' => false,
-		'message' => 'No GET parameters provided.',
+		'message' => 'No input data provided.',
 	]);
 	exit;
 }
