@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple API Documentation</title>
+    <style>
+        :root {
+            --bg: #f4f7fb;
+            --panel: #ffffff;
+            --text: #1e293b;
+            --muted: #4b5563;
+            --accent: #0f766e;
+            --border: #dbe2ea;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+            background: linear-gradient(160deg, #eef6ff 0%, #f8fafc 50%, #ecfeff 100%);
+            padding: 24px;
+        }
+
+        .wrap {
+            max-width: 760px;
+            margin: 0 auto;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 1.8rem;
+        }
+
+        p {
+            margin: 8px 0;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        h2 {
+            margin: 18px 0 8px;
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+
+        code {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 6px;
+            padding: 2px 6px;
+            font-size: 0.92rem;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            overflow-x: auto;
+            margin: 8px 0 0;
+        }
+
+        ul {
+            margin: 8px 0;
+            padding-left: 18px;
+        }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <h1>API Documentation</h1>
+        <p>This API stores incoming data in CSV files. It supports <strong>GET</strong> and <strong>POST</strong> requests.</p>
+
+        <h2>Endpoint</h2>
+        <div class="card">
+            <p><code>/index.php</code></p>
+        </div>
+
+        <h2>Methods</h2>
+        <div class="card">
+            <ul>
+                <li><strong>GET:</strong> sends data via query parameters.</li>
+                <li><strong>POST:</strong> sends data as JSON body with <code>Content-Type: application/json</code>.</li>
+            </ul>
+        </div>
+
+        <h2>Student CSV Routing</h2>
+        <div class="card">
+            <p>If you include the query parameter <code>student</code>, data is saved in a student-specific file:</p>
+            <ul>
+                <li>Without <code>student</code>: <code>data.csv</code></li>
+                <li>With <code>?student=max</code>: <code>data_max.csv</code></li>
+            </ul>
+        </div>
+
+        <h2>Examples</h2>
+        <div class="card">
+            <p>GET example:</p>
+            <pre>GET /index.php?student=anna&task=1&points=9</pre>
+            <p>POST example:</p>
+            <pre>POST /index.php?student=tom
+Content-Type: application/json
+
+{
+  "task": 2,
+  "points": 7
+}</pre>
+        </div>
+
+        <h2>Response</h2>
+        <div class="card">
+            <p>The API returns a JSON object with:</p>
+            <ul>
+                <li><code>success</code> (boolean)</li>
+                <li><code>message</code> (text)</li>
+                <li><code>columns</code> (CSV header columns)</li>
+            </ul>
+        </div>
+    </main>
+</body>
+</html>

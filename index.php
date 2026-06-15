@@ -3,7 +3,17 @@ declare(strict_types=1);
 
 header('Content-Type: application/json; charset=utf-8');
 
+$studentParam = $_GET['student'] ?? null;
 $csvFile = __DIR__ . '/data.csv';
+
+if (is_string($studentParam) && trim($studentParam) !== '') {
+	$sanitizedStudent = preg_replace('/[^a-zA-Z0-9_-]+/', '_', trim($studentParam));
+	$sanitizedStudent = trim((string) $sanitizedStudent, '_');
+
+	if ($sanitizedStudent !== '') {
+		$csvFile = __DIR__ . '/data_' . $sanitizedStudent . '.csv';
+	}
+}
 
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $input = [];
